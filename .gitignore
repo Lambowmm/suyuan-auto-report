@@ -1,0 +1,70 @@
+# Excel文件
+*.xlsx
+*.xls
+
+# PDF文件
+*.pdf
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.venv/
+
+# 输出报告文件夹
+output_reports/
+
+# 签名文件夹
+sign/
+images/sign/
+
+# Python相关
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 虚拟环境（再次确保）
+venv/
+ENV/
+env/
+.venv
+
+# IDE相关
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+.cache/
+
+# 操作系统相关
+Thumbs.db
+.DS_Store
+*.bak
+
