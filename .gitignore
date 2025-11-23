@@ -41,12 +41,6 @@ wheels/
 *.egg
 MANIFEST
 
-# 虚拟环境（再次确保）
-venv/
-ENV/
-env/
-.venv
-
 # IDE相关
 .vscode/
 .idea/
