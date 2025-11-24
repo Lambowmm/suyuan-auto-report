@@ -14,6 +14,15 @@
             margin: 15mm;
         }
 
+        @page special-report-page{
+            size: A4;
+            margin: 15mm 15mm 20mm 15mm;
+            @bottom-center {
+            content: element(tableFooter);
+            width: 100%;
+            }
+        }
+
         @page :first {
             margin: 0;
         }
@@ -79,6 +88,47 @@
             color: #666;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* ============================================
+        页脚样式
+        ============================================ */
+        .report-footer-content {
+            position: running(tableFooter);
+            color: #666;
+            padding:2px;
+            font-size: 10px;
+            border-top: 1px solid #00838f;
+            width: 100%;
+        }
+
+        .footerTable{
+            width:100%;
+            padding: 1px;
+        }
+
+        .footerLable{
+            width:10%;
+            text-align: left;
+        }
+
+        .datetext{
+            text-align: right;
+        }
+
+        .footer-note {
+            text-align: left;
+            width: 40%;
+        }
+
+        .footer-center {
+            text-align: right;
+            width: 50%;
+        }
+
+        .footer-right {
+            text-align: right;
+            width: 10%;
         }
 
         /* ============================================
@@ -306,6 +356,10 @@
             width: 100%;
         }
 
+        .SignImg{
+            width:60px;
+        }
+
         /* ============================================
            分页控制
            ============================================ */
@@ -330,13 +384,32 @@
 </head>
 
 <body>
+    <!-- 页脚区域 -->
+    <div class="report-footer-content">
+        <table class="footer-table">
+            <tr>
+                <td class="footerLable">检测者:</td>
+                <td><img src="images/sign/林巧铃.bmp" alt="检测者" class="SignImg"></td>
+                <td class="footerLable">审核者:</td>
+                <td><img src="images/sign/徐燕.bmp" alt="审核者" class="SignImg"></td>
+                <td class="footerLable">报告时间:</td>
+                <td class="datetext">2025/11/24</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="footer-note">该结果仅对本次样本负责</td>
+                <td colspan="2" class="footer-center">南通溯源医学检验实验室</td>
+                <td colspan="2" class="footer-right">电话：0513-83516988</td>
+            </tr>
+        </table>
+    </div>
+
     <!-- 第一页：封面 -->
     <section class="cover-container">
         <img src="images/Cover.jpg" alt="报告封面" class="cover-img">
     </section>
 
     <!-- 第二页：报告汇总 -->
-    <section>
+    <section style="page: special-report-page;">
         <header class="header-container">
             <div class="report-title">
                 <h1>检测报告汇总</h1>
@@ -417,7 +490,7 @@
 
     <!-- 第三页：详细检测结果 -->
     <div class="page"></div>
-    <section>
+    <section style="page: special-report-page;">
         <header class="header-container">
             <div class="report-title">
                 <h1>食物不耐受32项</h1>
