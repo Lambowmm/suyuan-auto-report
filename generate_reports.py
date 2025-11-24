@@ -599,5 +599,25 @@ def generate_reports() -> None:
     print("\n报告生成完成！")
 
 
+def pause_before_exit() -> None:
+    """
+    双击 exe 运行时阻止窗口立即关闭，方便查看日志或错误。
+    """
+    if getattr(sys, "frozen", False):
+        try:
+            input("\n任务完成，按回车键退出...")
+        except EOFError:
+            pass
+
+
 if __name__ == "__main__":
-    generate_reports()
+    exit_code = 0
+    try:
+        generate_reports()
+    except Exception as exc:
+        exit_code = 1
+        print(f"运行过程中出现未处理异常: {exc}")
+    finally:
+        pause_before_exit()
+
+    sys.exit(exit_code)
