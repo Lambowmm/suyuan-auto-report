@@ -65,7 +65,7 @@
            ============================================ */
         .header-container {
             justify-content: space-between;
-            border-bottom: 2px solid #00838f;
+            border-bottom: 2px solid #00adc5;
             padding-bottom: 10px;
             margin-bottom: 30px;
             text-align: center;
@@ -98,7 +98,7 @@
             color: #666;
             padding:2px;
             font-size: 10px;
-            border-top: 1px solid #00838f;
+            border-top: 1px solid #00adc5;
             width: 100%;
         }
 
@@ -167,14 +167,14 @@
            数据表格样式
            ============================================ */
         .category-header {
-            background-color: #00838f;
+            background-color: #00adc5;
             color: white;
             padding: 5px 10px;
             font-size: 15px;
             font-weight: bold;
             margin-top: 13px;
             border-radius: 4px 4px 0 0;
-            line-height: 1.46;
+            line-height: 1.5;
         }
 
         .result-table {
@@ -185,7 +185,7 @@
         }
 
         .result-table th {
-            border: 1px solid #00838f;
+            border: 1px solid #00adc5;
             padding: 3px;
             background-color: #eee;
             text-align: center;
@@ -197,11 +197,11 @@
             border: 1px solid #e0e0e0;
             padding: 4px;
             text-align: center;
-            line-height: 1.41;
+            line-height: 1.4;
         }
 
         .category-block {
-            margin-bottom: 24px;
+            margin-bottom: 25px;
         }
 
         /* 表格列宽设置 */
@@ -269,7 +269,7 @@
            汇总页样式
            ============================================ */
         .summary-box {
-            border: 1px solid #00838f;
+            border: 1px solid #00adc5;
             padding: 15px;
             margin-top: 20px;
             background: #f0fbfd;
@@ -277,14 +277,14 @@
         }
 
         .summary-title {
-            color: #00838f;
+            color: #00adc5;
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 10px;
         }
 
         .summary-title-User {
-            color: #00838f;
+            color: #00adc5;
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 10px;
@@ -293,7 +293,7 @@
         .advice-section {
             margin-top: 20px;
             padding: 10px;
-            border-left: 4px solid #00838f;
+            border-left: 4px solid #00adc5;
             background: #fafafa;
         }
 
@@ -311,7 +311,7 @@
         }
 
         .TextH1 {
-            color: #00838f;
+            color: #00adc5;
             font-size: 15px;
             font-weight: bold;
             margin-top: 20px;
@@ -389,9 +389,9 @@
         <table class="footer-table">
             <tr>
                 <td class="footerLable">检测者:</td>
-                <td><img src="images/sign/林巧铃.bmp" alt="检测者" class="SignImg"></td>
+                <td><img src="{{ inspector_sign }}" alt="检测者" class="SignImg"></td>
                 <td class="footerLable">审核者:</td>
-                <td><img src="images/sign/徐燕.bmp" alt="审核者" class="SignImg"></td>
+                <td><img src="{{ reviewer_sign }}" alt="审核者" class="SignImg"></td>
                 <td class="footerLable">报告时间:</td>
                 <td class="datetext">{{ date_report }}</td>
             </tr>
@@ -493,8 +493,8 @@
     <section style="page: special-report-page;">
         <header class="header-container">
             <div class="report-title">
-                <h1>食物不耐受32项</h1>
-                <h2>32-Item Food Intolerance Panel</h2>
+                <h1>食物不耐受64项</h1>
+                <h2>64-Item Food Intolerance Panel</h2>
             </div>
         </header>
 
@@ -569,7 +569,7 @@
         <div class="mainText">
             食物不耐受是III 型变态反应（免疫复合物型），反应缓慢、隐匿，患者难以自我察觉。症状多样化，症状的出现是免疫系统紊乱而引起。胃肠道通透性增加，更容易引起症状，每个人体内都存在 IgG 抗体，有时 IgG 抗体的升高可能并不伴随症状的出现。每个人的耐受力不同，检测只能客观反应你现在体内食物特异性 IgG 的水平出现了异常，出现不耐受症状的几率很大。现在没有出现症状不能代表今后不出现症状，或者过去出现了不耐受的症状而您并没有观察到。如果您继续吃阳性食物，今后就很有可能出现食物不耐受的症状。建议不要做这样的尝试，因为食物不耐受是长期的积累过程，一旦出现临床症状，治疗的时间也会很长。
         </div>
-        <img src="images/process.png" alt="食物不耐受过程示意图" class="processImg">
+        <img src="images/process.jpg" alt="食物不耐受过程示意图" class="processImg">
 
         <!-- 第二部分：食物不耐受与急性食物过敏 -->
         <div class="page"></div>
@@ -578,7 +578,7 @@
         </div>
         <div class="mainText">
             <p>
-                食物过敏反应可分为立即性反应及延迟性反应两种。立即性过敏反应主要由免疫球蛋白E主导，通常在接触过敏原后的2个小时内即产生反应。此种过敏是终生存在的，只要少量的过敏原即可引发过敏，症状严重时可能会致命，因此需绝对避免此类食物的摄取。食物不耐受属于延迟性过敏反应，主要牵涉到免疫球蛋白G，通常在接触过敏原2~24小时后才出现反应，有时甚至可拖延至72小时以后。由于反应时间延迟，因此病人常无法联想到症状发生与食物有关。此种过敏通常需要大量且频繁的食用过敏原，使得免疫球蛋白累积到一定程度时才出现反应，因此可以通过禁食过敏食物一段时间，然后再慢慢的恢复摄取的阶段方式进行"脱敏"，而不需要终生禁绝。传统的食物过敏检测多侧重于立即性过敏反应，通常立即性过敏反应快且症状明显，患者能自我察觉。反而是延迟性过敏反应，引起的症状牵涉广泛且不具特异性，在临床上一般人无法自行判断，必须通过检查来提醒病人正确的选择食物，以达到真正的健康饮食。
+                食物过敏反应可分为速发性反应及延迟性反应两种。立即性过敏反应主要由免疫球蛋白E主导，通常在接触过敏原后的2个小时内即产生反应。此种过敏是终生存在的，只要少量的过敏原即可引发过敏，症状严重时可能会致命，因此需绝对避免此类食物的摄取。食物不耐受属于延迟性过敏反应，主要牵涉到免疫球蛋白G，通常在接触过敏原2~24小时后才出现反应，有时甚至可拖延至72小时以后。由于反应时间延迟，因此病人常无法联想到症状发生与食物有关。此种过敏通常需要大量且频繁的食用过敏原，使得免疫球蛋白累积到一定程度时才出现反应，因此可以通过禁食过敏食物一段时间，然后再慢慢的恢复摄取的阶段方式进行"脱敏"，而不需要终生禁绝。传统的食物过敏检测多侧重于立即性过敏反应，通常立即性过敏反应快且症状明显，患者能自我察觉。反而是延迟性过敏反应，引起的症状牵涉广泛且不具特异性，在临床上一般人无法自行判断，必须通过检查来提醒病人正确的选择食物，以达到真正的健康饮食。
             </p>
         </div>
 
@@ -594,6 +594,7 @@
         </div>
         <img src="images/levelInformation.png" alt="分级参考标准图" class="center-tab">
 
+        <div class="page"></div>
         <!-- 第五部分：缓解/治疗方案 -->
         <div class="TextH1">
             五、缓解/治疗方案
@@ -606,16 +607,16 @@
         </div>
         <div class="mainText">
             <p>
-                1、均衡饮食，保证饮食多样性能有效减少食物不耐受的发生，尽量不要经常甚至每天食用同一种食物；
+                1、均衡饮食，保证饮食多样性能有效减少食物不耐受的发生，尽量不要经常甚至每天食用同一种食物。
             </p>
             <p>
-                2、细嚼慢咽，保证食物充分咀嚼与消化；
+                2、细嚼慢咽，保证食物充分咀嚼与消化。
             </p>
             <p>
-                3、在进行饮食调理的同时，可适当补充消化酶、益生菌等，重建肠道生态平衡；
+                3、在进行饮食调理的同时，可适当补充消化酶、益生菌等，重建肠道生态平衡。
             </p>
             <p>
-                4、建议食用有机、绿色、无公害食物，减少对肠道的负担；
+                4、建议食用有机、绿色、无公害食物，减少对肠道的负担。
             </p>
             <p>
                 5、定期检测，食物不耐受不易察觉，且会受饮食、环境、身体状况等因素的影响而发生变化，建议每年至少进行一次食物不耐受检测。
@@ -643,7 +644,7 @@
                 3、重新纳入
             </p>
             <p>
-                六个月后，复查转阴食物可重新纳入饮食。重新纳入时应注意：先选择原检测结果+1食物，其次为+2食物，最后是+3食物。纳入时应选择食物单一形式，若出现症状，则其他复杂形式不可再尝试，应继续忌食。每次只能纳入一种食物，密切观察有无原症状的复发或加重现象。不同食物的重新纳入至少应间隔 1 周以上。
+                六个月后，复查转阴食物可重新纳入饮食。重新纳入时应注意：先选择原检测结果+1食物，其次为+2食物，最后是+3食物。纳入时应选择食物单一形式，若出现症状，则其他复杂形式不可再尝试，应继续忌食。每次只能纳入一种食物，密切观察有无原症状的复发或加重现象。不同食物的重新纳入至少应间隔一周以上。
             </p>
         </div>
 

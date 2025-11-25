@@ -24,10 +24,17 @@ COLUMN_INDEX_PATIENT_NAME = 4  # 患者名称列索引
 COLUMN_INDEX_GENDER = 5  # 性别列索引
 COLUMN_INDEX_AGE = 6  # 年龄列索引
 COLUMN_INDEX_TEST_TIME = 1  # 测试时间列索引
-COLUMN_INDEX_FOOD_START = 15  # 食物数据起始列索引
+COLUMN_INDEX_INSPECTOR = 14  # 检验者列索引
+COLUMN_INDEX_REVIEWER = 15  # 审核者列索引
+COLUMN_INDEX_FOOD_START = 16  # 食物数据起始列索引
 
 # 食物分页大小
 FOOD_ITEMS_PER_PAGE = 32
+
+# 默认签名人员
+DEFAULT_INSPECTOR_NAME = "林巧铃"
+DEFAULT_REVIEWER_NAME = "徐燕"
+DEFAULT_SIGNATURE_FILE = "images/sign/Logo.bmp"
 
 # 过敏等级阈值
 LEVEL_THRESHOLD_NORMAL = 50
@@ -64,13 +71,15 @@ BASE_DIR = get_base_path()
 # 文件路径配置
 EXCEL_PATH = BASE_DIR / "TestResult.xlsx"
 OUTPUT_DIR = BASE_DIR / "output_reports"
-WEASYPRINT_CMD = BASE_DIR / "weasyprint.exe"
+TEMPLATE_DIR = BASE_DIR / "templates"
+BIN_DIR = BASE_DIR / "bin"
+WEASYPRINT_CMD = BIN_DIR / "weasyprint.exe"
 
 # 项目类型到模板文件的映射
 PROJECT_TEMPLATE_MAP: Dict[str, Path] = {
-    "IgG-F96-1": BASE_DIR / "96-Template.html",
-    "IgG-F64-1": BASE_DIR / "64-Template.html",
-    "IgG-F32-1": BASE_DIR / "32-Template.html",
+    "IgG-F96-1": TEMPLATE_DIR / "IgG-F96-Template.html",
+    "IgG-F64-1": TEMPLATE_DIR / "IgG-F64-Template.html",
+    "IgG-F32-1": TEMPLATE_DIR / "IgG-F32-Template.html",
 }
 
 # 项目类型到食物项数量的映射
@@ -99,12 +108,19 @@ CATEGORY_MAP: Dict[str, List[str]] = {
     "调味类": ["肉桂", "红茶", "芥末", "蜂蜜", "黄油", "酵母", "咖啡", "巧克力", "蔗糖"],
 }
 
+# 预先构建“名称 -> 分类”的精确映射，避免模糊匹配带来的误判
+EXACT_CATEGORY_MAP: Dict[str, str] = {
+    food_name.strip(): category
+    for category, names in CATEGORY_MAP.items()
+    for food_name in names
+}
+
 # ==================== 工具函数 ====================
 
 
 def get_category(food_name: Any) -> str:
     """
-    根据食物名称模糊匹配分类。
+    根据食物名称进行精确匹配分类。
 
     Args:
         food_name: 食物名称，可以是字符串或其他类型
@@ -114,13 +130,9 @@ def get_category(food_name: Any) -> str:
     """
     if pd.isna(food_name):
         return "其他/未分类"
-
-    name_str = str(food_name)
-    for category, keywords in CATEGORY_MAP.items():
-        if any(keyword in name_str for keyword in keywords):
-            return category
-
-    return "其他/未分类"
+    
+    name_str = str(food_name).strip()
+    return EXACT_CATEGORY_MAP.get(name_str, "其他/未分类")
 
 
 def calculate_level(value: Any) -> str:
@@ -265,11 +277,15 @@ def extract_patient_info(info_row: pd.Series, df: pd.DataFrame) -> Dict[str, str
             - age: 年龄
             - lab_id: 患者ID
             - date_received: 测试时间（格式：YYYY-MM-DD）
+            - inspector: 检验者姓名
+            - reviewer: 审核者姓名
     """
     gender = ""
     age = ""
     lab_id = ""
     date_received = ""
+    inspector = ""
+    reviewer = ""
 
     # 获取性别
     if len(df.columns) > COLUMN_INDEX_GENDER:
@@ -303,11 +319,28 @@ def extract_patient_info(info_row: pd.Series, df: pd.DataFrame) -> Dict[str, str
                 # 如果不是日期对象，尝试转换为字符串
                 date_received = str(test_time)[:10] if len(str(test_time)) >= 10 else ""
 
+    # 获取检验者
+    if len(df.columns) > COLUMN_INDEX_INSPECTOR:
+        inspector_col = df.columns[COLUMN_INDEX_INSPECTOR]
+        if not pd.isna(info_row[inspector_col]):
+            inspector = str(info_row[inspector_col]).strip()
+
+    # 获取审核者
+    if len(df.columns) > COLUMN_INDEX_REVIEWER:
+        reviewer_col = df.columns[COLUMN_INDEX_REVIEWER]
+        if not pd.isna(info_row[reviewer_col]):
+            reviewer = str(info_row[reviewer_col]).strip()
+
+    inspector = inspector or DEFAULT_INSPECTOR_NAME
+    reviewer = reviewer or DEFAULT_REVIEWER_NAME
+
     return {
         "gender": gender,
         "age": age,
         "lab_id": lab_id,
         "date_received": date_received,
+        "inspector": inspector,
+        "reviewer": reviewer,
     }
 
 
@@ -347,6 +380,33 @@ def group_foods_by_category(foods: List[Dict[str, Any]]) -> Dict[str, List[Dict[
         grouped.setdefault(category, []).append(item)
 
     return grouped
+
+
+def get_signature_path(name: str) -> str:
+    """
+    根据姓名获取签名文件路径。
+
+    Args:
+        name: 检验者或审核者姓名
+
+    Returns:
+        str: 签名文件路径，如果找不到则返回默认签名路径
+    """
+    if not name:
+        # 如果姓名为空，返回默认签名
+        return DEFAULT_SIGNATURE_FILE
+    
+    # 签名文件目录
+    sign_dir = BASE_DIR / "images" / "sign"
+    
+    # 尝试匹配签名文件（支持 .bmp 扩展名）
+    signature_file = sign_dir / f"{name}.bmp"
+
+    if signature_file.exists():
+        return f"images/sign/{name}.bmp"
+
+    # 如果找不到匹配的签名文件，返回默认签名
+    return DEFAULT_SIGNATURE_FILE
 
 
 def generate_pdf_from_html(
@@ -436,7 +496,7 @@ def validate_environment() -> bool:
         )
     except (subprocess.CalledProcessError, FileNotFoundError):
         print(f"错误: 无法执行命令 '{WEASYPRINT_CMD.name}'")
-        print(f"请确保 {WEASYPRINT_CMD.name} 位于此文件夹: {BASE_DIR}")
+        print(f"请确保 {WEASYPRINT_CMD.name} 位于此文件夹: {BIN_DIR}")
         return False
 
     return True
@@ -520,6 +580,10 @@ def process_single_report(
     # 提取患者信息
     patient_info = extract_patient_info(info_row, df)
 
+    # 获取签名文件路径
+    inspector_sign = get_signature_path(patient_info["inspector"])
+    reviewer_sign = get_signature_path(patient_info["reviewer"])
+
     # 加载模板并渲染
     template = env.get_template(template_file.name)
 
@@ -530,6 +594,8 @@ def process_single_report(
         "date_received": patient_info["date_received"],
         "date_report": datetime.date.today().strftime("%Y-%m-%d"),
         "lab_id": patient_info["lab_id"],
+        "inspector_sign": inspector_sign,
+        "reviewer_sign": reviewer_sign,
         "foods": foods,
         "food_categories": grouped_foods,
         "summary": summary,
@@ -587,8 +653,7 @@ def generate_reports() -> None:
         return
 
     # 配置 Jinja2 环境
-    template_dir = BASE_DIR
-    env = Environment(loader=FileSystemLoader(str(template_dir)))
+    env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
 
     # 遍历处理数据（每次处理两行：项目信息行和数值行）
     row_index = 0
