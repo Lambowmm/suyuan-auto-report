@@ -34,7 +34,7 @@
 
 2. 安装 Python 依赖：
    ```bash
-   pip install pandas openpyxl jinja2
+   pip install -r requirements.txt
    ```
 
 ## 使用方法

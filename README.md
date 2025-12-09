@@ -34,7 +34,7 @@ This tool automatically generates professional PDF reports from Excel test data 
 
 2. Install Python dependencies:
    ```bash
-   pip install pandas openpyxl jinja2
+   pip install -r requirements.txt
    ```
 
 ## Usage
